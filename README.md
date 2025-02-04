@@ -1,1 +1,1 @@
-# minitalk
+# mini_talk
