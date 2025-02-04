@@ -1,4 +1,6 @@
+#include <unistd.h>
 #include <stdio.h>
+#include <signal.h>
 
 int main(void)
 {
@@ -10,7 +12,12 @@ int main(void)
  while (i >= 0)
   {
     bit = byte >> i & 1;
-    printf("%d", bit);
+    if (bit == 1)
+      kill(getpid(), SIGUSR1);
+    else
+      kill(getpid(), SIGUSR2); 
+    usleep(100);
     i--;
   }
+  return (0);
 }
