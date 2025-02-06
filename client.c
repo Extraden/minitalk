@@ -1,23 +1,39 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
+#include "./libft/libft.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
- int i;
- unsigned char bit;
-
- i = 7;
- unsigned char byte = 255;
- while (i >= 0)
+  if (argc != 3)
   {
-    bit = byte >> i & 1;
-    if (bit == 1)
-      kill(getpid(), SIGUSR1);
-    else
-      kill(getpid(), SIGUSR2); 
-    usleep(100);
-    i--;
+    printf("Wrong number of arguments!\n");
+    return (1);
+  }
+  size_t  i;
+  int  j;
+  unsigned char bit;
+  unsigned char *msg;
+  pid_t server_pid;
+
+  server_pid = ft_atoi(argv[1]);
+  msg = (unsigned char *)argv[2];
+  i = 0;
+  while (msg[i])
+  {
+    unsigned char byte = msg[i];
+    j = 7;
+    while (j >= 0)
+    {
+      bit = byte >> j & 1;
+      if (bit == 1)
+        kill(server_pid, SIGUSR1);
+      else
+        kill(server_pid, SIGUSR2); 
+      usleep(100000);
+      j--;
+    }
+    i++;
   }
   return (0);
 }

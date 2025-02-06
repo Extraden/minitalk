@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #include <unistd.h>
+#include <signal.h>
 #include <stdio.h>
 
 pid_t getpid(void);
@@ -18,17 +19,16 @@ unsigned char bits_to_byte(char *bits)
   return (byte);
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
     unsigned char *msg;
     unsigned char byte;
     pid_t pid;
+    unsigned char *tmp;
     
     pid = getpid();
     printf("%d\n", pid);
-    char bits[8] = {0, 1, 0, 0, 0, 0, 0, 1};
-    byte = bits_to_byte(bits);
-    printf("%c %d\n", byte, byte);
-    msg = (unsigned char *) argv[1];
+    tmp = bits_to_byte("01100001");
+    printf("%c\n", tmp);
     return (0);
 }
