@@ -30,7 +30,7 @@ int main(int argc, char **argv)
         kill(server_pid, SIGUSR1);
       else
         kill(server_pid, SIGUSR2); 
-      usleep(100000);
+      usleep(1000);
       j--;
     }
     i++;
