@@ -1,7 +1,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
-#include <sys/types.h> 
+#include <sys/types.h>
+#include "./libft/ft_printf.h"
+#include "./libft/libft.h"
 
 extern int g_pid;
 
@@ -29,7 +31,7 @@ void  send_msg(char **argv)
         kill(server_pid, SIGUSR2);
       j--;
     }
-    usleep (1000);
+    usleep (100);
     i++;
   }
 }

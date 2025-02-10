@@ -1,6 +1,8 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
+#include "./libft/ft_printf.h"
+#include "./libft/libft.h"
  
 int g_pid;
 
