@@ -1,8 +1,8 @@
 #include <sys/types.h>
-#include <unistd.h>
 #include <signal.h>
-#include <stdio.h>
-#include "./printf/ft_printf.h"
+#include <unistd.h>
+ 
+int g_pid;
 
 void  handler(int signo, siginfo_t *info, void *context)
 {
@@ -12,9 +12,9 @@ void  handler(int signo, siginfo_t *info, void *context)
 	static int bit_count = 0;
 
   if (signo == SIGUSR1)
-	byte = (byte << 1) | 1;
+	  byte = (byte << 1) | 1;
   else if (signo == SIGUSR2)
-    byte = (byte << 1) | 0;
+    byte <<= 1;
 
 	bit_count++;
 
@@ -24,19 +24,18 @@ void  handler(int signo, siginfo_t *info, void *context)
 		byte = 0;
 		bit_count = 0;
 	}
-  
 }
 
 int main(void)
 {
-  struct sigaction sa;
+  struct sigaction  sa;
+  pid_t pid;
+
   sigemptyset(&sa.sa_mask);
   sa.sa_flags = SA_SIGINFO;
   sa.sa_sigaction = handler;
   sigaction(SIGUSR1, &sa, NULL);
   sigaction(SIGUSR2, &sa, NULL);
-    pid_t pid;
-    
     pid = getpid();
     ft_printf("%d\n", pid);
     while (1)

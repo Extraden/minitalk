@@ -1,15 +1,12 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <signal.h>
-#include "./libft/libft.h"
+#include <sys/types.h> 
 
-int main(int argc, char **argv)
+extern int g_pid;
+
+void  send_msg(char **argv)
 {
-  if (argc != 3)
-  {
-    printf("Wrong number of arguments!\n");
-    return (1);
-  }
   size_t  i;
   int  j;
   unsigned char bit;
@@ -29,11 +26,21 @@ int main(int argc, char **argv)
       if (bit == 1)
         kill(server_pid, SIGUSR1);
       else
-        kill(server_pid, SIGUSR2); 
-      usleep(1000);
+        kill(server_pid, SIGUSR2);
       j--;
     }
+    usleep (1000);
     i++;
   }
+}
+
+int main(int argc, char **argv)
+{
+  if (argc != 3)
+  {
+    ft_printf("Wrong number of arguments!\n");
+    return (1);
+  }
+  send_msg(argv);
   return (0);
 }
