@@ -11,13 +11,13 @@ all: $(SERVER) $(CLIENT)
 $(LIBFT):
 	make -C libft
 
-$(SERVER): $(LIBFT) server.o
-	$(CC) $(CFLAGS) server.o -Llibft -lft -o $(SERVER)
+$(SERVER): server.o | $(LIBFT)
+	$(CC) $(CFLAGS) server.o -L./libft -lft -o $(SERVER)
 
-$(CLIENT): $(LIBFT) client.o
-	$(CC) $(CFLAGS) client.o -Llibft -lft -o $(CLIENT)
+$(CLIENT): client.o | $(LIBFT)
+	$(CC) $(CFLAGS) client.o -L./libft -lft -o $(CLIENT)
 
-%.o: %.c $(LIBFT)
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

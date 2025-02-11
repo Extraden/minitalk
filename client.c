@@ -7,42 +7,65 @@
 
 extern int g_pid;
 
-void  send_msg(char **argv)
+void  send_msg(char c, pid_t server_pid)
 {
-  size_t  i;
-  int  j;
+  int  i;
   unsigned char bit;
-  unsigned char *msg;
-  pid_t server_pid;
 
-  server_pid = ft_atoi(argv[1]);
-  msg = (unsigned char *)argv[2];
-  i = 0;
-  while (msg[i])
-  {
-    unsigned char byte = msg[i];
-    j = 7;
-    while (j >= 0)
+ 
+    unsigned char byte = c;
+    i = 7;
+    while (i >= 0)
     {
-      bit = byte >> j & 1;
+      bit = byte >> i & 1;
       if (bit == 1)
         kill(server_pid, SIGUSR1);
       else
         kill(server_pid, SIGUSR2);
-      j--;
+      usleep (5000);
+      i--;
     }
-    usleep (100);
-    i++;
+}
+
+void send_strlen(size_t len, pid_t server_pid)
+{
+  int i;
+  unsigned char bit;
+
+  i = 31;
+  while (i >= 0)
+  {
+    bit = len >> i & 1;
+    if (bit == 1)
+      kill(server_pid, SIGUSR1);
+    else
+      kill(server_pid, SIGUSR2);
+    usleep(5000);
+    i--;
   }
 }
 
 int main(int argc, char **argv)
 {
+  pid_t server_pid;
+  char *msg;
+  size_t len;
+  size_t i;
+
   if (argc != 3)
   {
     ft_printf("Wrong number of arguments!\n");
     return (1);
   }
-  send_msg(argv);
+  server_pid = ft_atoi(argv[1]);
+  msg = argv[2];
+  len = ft_strlen(msg);
+  send_strlen(len, server_pid);
+  i = 0;
+  while (msg[i])
+  {
+    send_msg(msg[i], server_pid);
+    i++;
+  }
   return (0);
 }
