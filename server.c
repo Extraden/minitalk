@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include "./libft/ft_printf.h"
 #include "./libft/libft.h"
+
+int	g_len_received = 0;
  
 void  handler(int signo, siginfo_t *info, void *context)
 {

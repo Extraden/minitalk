@@ -41,33 +41,25 @@ void  send_char(char c, pid_t server_pid)
   }
 }
 
-// void send_strlen(size_t len, pid_t server_pid)
-// {
-//   int i;
-//   unsigned char bit;
+void send_strlen(size_t len, pid_t server_pid)
+{
+  int i;
+  unsigned char bit;
 
-//   i = 31;
-//   while (i >= 0)
-//   {
-//     bit = len >> i & 1;
-//     if (bit == 1 && g_ack_received == 0)
-//       kill(server_pid, SIGUSR1);
-//     else if (bit == 0 && g_ack_received == 0)
-//       kill(server_pid, SIGUSR2);
-//     else
-//       exit(1);
-//     usleep(1000);
-//     g_ack_received = 1;
-//     i--;
-//   }
-// }
-
+  i = 31;
+  while (i >= 0)
+  {
+    bit = len >> i & 1;
+    send_bit(bit, server_pid);   
+    i--;
+  }
+}
 
 int main(int argc, char **argv)
 {
   pid_t server_pid;
   char *msg;
-  //size_t len;
+  size_t len;
   size_t i;
   struct sigaction  sa;
 
@@ -82,13 +74,15 @@ int main(int argc, char **argv)
   sigaction(SIGUSR1, &sa, NULL);
   server_pid = ft_atoi(argv[1]);
   msg = argv[2];
-  //len = ft_strlen(msg);
-  // send_strlen(len, server_pid);
+  len = ft_strlen(msg);
+  send_strlen(len, server_pid);
   i = 0;
   while (msg[i])
   {
     send_char(msg[i], server_pid);
     i++;
   }
+  send_char('\n', server_pid);
+
   return (0);
 }
